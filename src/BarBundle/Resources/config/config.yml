@@ -1,0 +1,3 @@
+chain_commands:
+    'foo:hello':
+        command_name: 'bar:hi'
