@@ -19,7 +19,7 @@ class ChainCommandsExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $container->setParameter('chain_command.config', $this->loadChainCommandsConfig($configs));
+        $container->setParameter('chain_command.chains', $this->loadChainCommandsConfig($configs));
         $this->loadServices($container);
     }
 

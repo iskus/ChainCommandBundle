@@ -3,32 +3,31 @@
 namespace ChainCommandBundle\Manager;
 
 use ChainCommandBundle\Command\AbstractChainCommand;
-use ChainCommandBundle\DependencyInjection\Configuration;
 
 class ChainCommandManager
 {
-    /** @var array $parentCommandName => [$chainCommandName, $chainCommandArgv] */
-    private $config = [];
+    /** @var array $parentCommandName => [$chainCommand, $chainCommand2 ...] */
+    private $chains = [];
 
     /**
-     * @param array $config
+     * @param array $chains
      */
-    public function __construct(array $config)
+    public function __construct(array $chains)
     {
-        $this->config = $config;
+        $this->chains = $chains;
     }
 
     /**
      * @param AbstractChainCommand $parentCommand
-     * @return null|string
+     * @return string[]
      */
-    public function getChainCommandName(AbstractChainCommand $parentCommand)
+    public function getChainCommandNames(AbstractChainCommand $parentCommand)
     {
         $parentCommandName = $parentCommand->getName();
-        if (isset($this->config[$parentCommandName])) {
-            return $this->config[$parentCommandName][Configuration::COMMAND_NAME_KEY];
+        if (isset($this->chains[$parentCommandName])) {
+            return $this->chains[$parentCommandName];
         }
-        return null;
+        return [];
     }
 
     /**
@@ -37,8 +36,8 @@ class ChainCommandManager
      */
     public function getParentChainCommandName(AbstractChainCommand $chainCommand)
     {
-        foreach ($this->config as $parentCommandName => $config) {
-            if ($config[Configuration::COMMAND_NAME_KEY] === $chainCommand->getName()) {
+        foreach ($this->chains as $parentCommandName => $chainCommands) {
+            if (in_array($chainCommand->getName(), $chainCommands)) {
                 return $parentCommandName;
             }
         }

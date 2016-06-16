@@ -1,4 +1,4 @@
 services:
     chain_command.manager:
         class: ChainCommandBundle\Manager\ChainCommandManager
-        arguments: ['%chain_command.config%']
+        arguments: ['%chain_command.chains%']

@@ -7,8 +7,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    const COMMAND_NAME_KEY = 'command_name';
-
     /**
      * Generates the configuration tree builder.
      *
@@ -22,11 +20,8 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->useAttributeAsKey('name')
             ->prototype('array')
-                ->children()
-                    ->scalarNode(self::COMMAND_NAME_KEY)
-                        ->isRequired()
-                        ->cannotBeEmpty()
-                    ->end()
+                ->requiresAtLeastOneElement()
+                ->prototype('scalar')->end()
             ->end();
 
         return $treeBuilder;
